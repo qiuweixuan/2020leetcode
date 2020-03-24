@@ -64,7 +64,9 @@ public:
         }
         auto&& begin = arr.begin();
         auto&& end = arr.end();
-        std::nth_element(begin,begin + k,end);
+        //std::nth_element(begin,begin + k,end);
+         quick_sort_nth_element(arr,k,0,arr.size());
+
         for (size_t i = 0; i < k; i++)
         {
             ans.push_back(arr[i]);
@@ -72,7 +74,37 @@ public:
         return ans;
     }
 
-    void quick_sort_nth_element(){
+    void quick_sort_nth_element(vector<int>& arr, int k,int begin,int end){
+        if(begin >= end){
+            return;
+        }
+
+        int left = begin;
+        int right = end;
+        int pivot = arr[begin];
+        int hole_id = begin;
+        while(left < right){
+            while(--right > begin && arr[right] >= pivot);
+            if(right <= left){ break; }
+            arr[left] = arr[right];
+            hole_id = right;
+
+            while(++left < end && arr[left] <= pivot);
+            if(right <= left){ break; }
+            arr[right] = arr[left];
+            hole_id = left;
+        }
+        arr[hole_id] = pivot;
+
+        if(hole_id == k){
+            return;
+        }
+        else if(k < right){
+            quick_sort_nth_element(arr,k,begin,hole_id);
+        }
+        else{
+            quick_sort_nth_element(arr,k,hole_id + 1,end);
+        } 
 
     }
 
